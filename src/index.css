@@ -1,13 +1,117 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+nav {
+  padding: 0 1rem;
+}
+
+.shop {
+  min-height: calc(100vh - 134px);
+  padding: 1rem 2rem;
+}
+
+.card {
+  display: "flex";
+  flex-direction: "column";
+  height: "100%";
+}
+
+.card-content {
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "space-between";
+  flex-grow: 1;
+}
+
+.goods {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.cart {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 6;
+  padding: 1rem;
+  cursor: pointer;
+  background-color: #ffb74d;
+}
+
+.cart:hover {
+  background-color: #ffcc80;
+  box-shadow: 2px 0 2px #fff3e0;
+}
+
+@media (min-width: 767px) {
+  .cart {
+    position: fixed;
+    height: fit-content;
+    top: calc(67px + 1rem);
+    right: 1rem;
+  }
+}
+
+.cart-list {
+  position: fixed;
+  top: 50%;
+  right: 50%;
+  width: 50rem;
+  max-width: 95%;
+  z-index: 6;
+  transform: translate(50%, -50%);
+  animation: show 200ms ease-in-out;
+}
+
+.manage-quantity {
+  cursor: pointer;
+  vertical-align: middle;
+  color: #26a69a;
+}
+
+.cart-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+  color: #fff3e0;
+}
+
+.delete-item {
+  position: absolute;
+  right: 0.5rem;
+  cursor: pointer;
+}
+
+@keyframes show {
+  from {
+    top: 70%;
+    opacity: 0.1;
+  }
+  to {
+    top: 50%;
+    opacity: 1;
+  }
+}
+
+#toast-container {
+  top: 3rem !important;
+  animation: fade-in 200ms ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0rem);
+  }
 }
