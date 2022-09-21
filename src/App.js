@@ -1,14 +1,18 @@
 import {Header} from './components/Header.jsx'
 import {Footer} from './components/Footer.jsx'
-import {Shop} from './components/Shop'
+import {Shop} from './components/Shop.jsx'
+
+import {ContextProvider} from './context.jsx'
 
 function App() {
   return (
-    <div>
+    <>
       <Header />
-      <Shop />
+      <ContextProvider>
+        <Shop />
+      </ContextProvider>
       <Footer />
-    </div>
+    </>
   );
 }
 

@@ -1,5 +1,10 @@
+import { useContext } from "react";
+import { ShopContext } from "../context";
+
 function GoodsItem(props) {
-  const { mainId, displayName, displayDescription, displayAssets, price, addGoods = Function.prototype } = props;
+  const { mainId, displayName, displayDescription, displayAssets, price } = props;
+
+  const { addGoods } = useContext(ShopContext);
 
   const itemPrice = price.finalPrice;
   return (

@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { ShopContext } from "../context";
+
 import { API_KEY, API_URL } from "../config.js";
 import { GoodsList } from "./GoodsList.jsx";
 import { Loader } from "./Loader.jsx";
@@ -7,92 +9,32 @@ import { CartList } from "./CartList.jsx";
 import { Alert } from "./Alert.jsx";
 
 function Shop() {
-  const [goods, setGoods] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [order, setOrder] = useState([]);
-  const [isCartVisible, setCartVisible] = useState(false);
-  const [alertName, setAlertName] = useState("");
+  const { setGoods, loading, order, isCartVisible, alertName } = useContext(ShopContext);
 
-  useEffect(function getGoods() {
-    fetch(API_URL, {
-      headers: {
-        Authorization: API_KEY,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        data.shop && setGoods(data.shop.filter((entry) => entry.mainType !== "bundle"));
-        setLoading(false);
-      });
-  }, []);
-
-  function addGoods(item) {
-    const itemIndex = order.findIndex((orderItem) => orderItem.mainId === item.mainId);
-
-    if (itemIndex === -1) {
-      const newItem = {
-        ...item,
-        quantity: 1,
-      };
-      setOrder([...order, newItem]);
-    } else {
-      const newOrder = order.map((orderItem, index) => {
-        if (index === itemIndex) {
-          return {
-            ...orderItem,
-            quantity: orderItem.quantity + 1,
-          };
-        } else {
-          return orderItem;
-        }
-      });
-      setOrder(newOrder);
-    }
-    setAlertName(item.displayName);
-  }
-
-  function toggleCart() {
-    setCartVisible(!isCartVisible);
-  }
-
-  function deleteItem(id) {
-    setOrder(order.filter((item) => item.mainId !== id));
-  }
-
-  function manageItemQuantity(itemId, step) {
-    const newOrder = order.map((item) => {
-      if (item.mainId !== itemId) {
-        return item;
-      } else if (item.quantity > 0) {
-        return {
-          ...item,
-          quantity: item.quantity + step,
-        };
-      } else if (step < 0) {
-        return item;
-      } else {
-        return {
-          ...item,
-          quantity: item.quantity + step,
-        };
-      }
-    });
-    setOrder(newOrder);
-  }
-
-  function closeAlert() {
-    setAlertName("");
-  }
+  useEffect(
+    function getGoods() {
+      fetch(API_URL, {
+        headers: {
+          Authorization: API_KEY,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setGoods(data.shop.filter((entry) => entry.mainType !== "bundle"));
+        });
+    },
+    [setGoods]
+  );
 
   return (
     <div className="container content">
-      {isCartVisible && <CartList order={order} toggleCart={toggleCart} deleteItem={deleteItem} manageItemQuantity={manageItemQuantity} />}
+      {isCartVisible && <CartList />}
 
-      <Cart quantity={order.length} toggleCart={toggleCart} />
+      <Cart quantity={order.length} />
 
-      {loading ? <Loader /> : <GoodsList goods={goods} addGoods={addGoods} />}
+      {loading ? <Loader /> : <GoodsList />}
 
-      {alertName && <Alert name={alertName} closeAlert={closeAlert} />}
+      {alertName && <Alert />}
     </div>
   );
 }
